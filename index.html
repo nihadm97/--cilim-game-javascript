@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cilim</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Igra</a></li>
+      <li><a href="upute.html">Upute</a></li>
+      <li><a href="o_projektu.html">O projektu</a></li>
+    </ul>
+  </div>
+</nav>
+<canvas id="myCanvas" width="550" height="550" style="border: solid black 2px; margin-left: 15px; float: left;"></canvas>
+<form name="Forma" style="margin-left: 10px; float: left;  margin-top: 10px;">
+  Ime prvog igraca: <input type="text" name="Ime1"><br><br>
+  Ime drugog igraca: <input type="text" name="Ime2"><br><br>
+  <p>Velicina:</p>
+  <select id="tezina">
+    <option>Small</option>
+    <option>Medium</option>
+    <option>Large</option>
+    <option>Extra Large</option>
+  </select><br><br>
+<input type="button" onclick="pomocna('myCanvas')" value="Zapocni novu igru"><br>
+</form>
+<script type="text/javascript">
+var pomocna = function(canvas) {
+    var tezina = document.getElementById('tezina').value;
+    Ime1=document.forms["Forma"]["Ime1"].value;
+    Ime2=document.forms["Forma"]["Ime2"].value;
+    if (Ime1 == "" || Ime2 == "") {
+    alert("Unesite imena igraca");} else{
+    if (tezina=="Small") {baklava(549, 61,'myCanvas');}
+    if (tezina=="Medium") {baklava(550, 50,'myCanvas');}
+    if (tezina=="Large") {baklava(546, 42,'myCanvas');}
+    if (tezina=="Extra Large") {baklava(544, 32,'myCanvas');}}
+};
+var baklava = function(dimenzija, tezina, canvas) {
+  //CRTA BAKLAVU
+    var tezinaigre = document.getElementById('tezina').value;
+    var canvas = document.getElementById(canvas);
+    var ctx = canvas.getContext('2d');
+    ctx.canvas.width = dimenzija;
+    ctx.canvas.height = dimenzija;
+    ctx.lineWidth = 5;
+    var a=0;
+    var b=0;
+    var brojac1=0;
+    var brojac2=0;
+    var Igrac= [{x1: (dimenzija-tezina)/2, y1: dimenzija-tezina, x2: (dimenzija+tezina)/2, y2: dimenzija-tezina},
+{x1: tezina, y1: (dimenzija-tezina)/2, x2: tezina, y2: (dimenzija+tezina)/2},{x1: dimenzija-tezina, y1: (dimenzija-tezina)/2, 
+    x2: dimenzija-tezina, y2: (dimenzija+tezina)/2},
+{x1: (dimenzija-tezina)/2, y1: tezina, x2: (dimenzija+tezina)/2, y2: tezina}];
+    for (y = 0; y <= dimenzija; y += tezina){
+        for (x = 0; x <= dimenzija; x += tezina) {
+          ctx.beginPath();
+          if (x<(dimenzija+tezina)/2 && y<(dimenzija+tezina)/2) {
+          ctx.moveTo(x, y+tezina);
+          ctx.lineTo(x, y);
+          ctx.lineTo(x+tezina, y);
+            }
+          if (x>=(dimenzija+tezina)/2 && y<(dimenzija+tezina)/2) {
+          ctx.moveTo(x,y);
+          ctx.lineTo(x, y+tezina);
+          ctx.lineTo(x+tezina, y+tezina);
+            }
+          if (x<=(dimenzija+tezina)/2 && y>=(dimenzija+tezina)/2) {
+          ctx.moveTo(x, y);
+          ctx.lineTo(x+tezina, y);
+          ctx.lineTo(x+tezina, y+tezina);
+            }
+          if (x>(dimenzija+tezina)/2 && y>=(dimenzija+tezina)/2) {
+          ctx.moveTo(x-tezina, y+tezina);
+          ctx.lineTo(x-tezina, y);
+          ctx.lineTo(x, y);
+            }
+          if ((x==(dimenzija-tezina-a)/2 && y==a/2) || (x==(dimenzija+tezina+a)/2 && y==a/2) || (x==b/2 && y==(dimenzija+tezina+b)/2) || (x==dimenzija-b/2 && y==(dimenzija+tezina+b)/2)){
+          //DODAJE RUBNE TACKE DA BI I CRNE LINIJE RACUNALI U ZATVARANJU KVADRATA
+          if (x<(dimenzija+tezina)/2 && y<(dimenzija+tezina)/2) {
+          Igrac.push({x1: x, y1: y, x2: x, y2: y+tezina});
+          Igrac.push({x1: x, y1: y, x2: x+tezina, y2: y});
+          Igrac.push({x1: x+(dimenzija+tezina)/2-tezina, y1: y+(dimenzija+tezina)/2, x2: x+(dimenzija+tezina)/2-tezina, 
+          y2: y+tezina+(dimenzija+tezina)/2});
+          Igrac.push({x1: x+(dimenzija+tezina)/2-tezina, y1: y+(dimenzija+tezina)/2, x2: x+(dimenzija+tezina)/2, 
+          y2: y+(dimenzija+tezina)/2});}
+          if (x<=(dimenzija+tezina)/2 && y>=(dimenzija+tezina)/2) {
+          Igrac.push({x1: b/2, y1: (dimenzija+tezina+b)/2, x2: b/2+tezina, y2: (dimenzija+tezina+b)/2});
+          Igrac.push({x1: b/2+tezina, y1: (dimenzija+tezina+b)/2, x2: b/2+tezina, y2: (dimenzija+tezina+b)/2+tezina});
+          Igrac.push({x1: b/2+(dimenzija-tezina)/2, y1: b/2, x2: b/2+(dimenzija+tezina)/2, y2: b/2});
+          Igrac.push({x1: b/2+(dimenzija+tezina)/2, y1: b/2, x2: b/2+(dimenzija+tezina)/2, y2: b/2+tezina});
+          }
+          ctx.strokeStyle = "black";
+          ctx.stroke();
+          if ((x==(dimenzija-tezina-a)/2 && y==a/2) || (x==(dimenzija+tezina+a)/2 && y==a/2)){
+          brojac1+=1
+          if (brojac1==2) {
+            a+=2*tezina;
+            brojac1=0;
+          }}
+          else {
+          brojac2+=1
+          if (brojac2==2) {
+            b+=2*tezina;
+            brojac2=0;
+          } 
+          }
+            }
+          else {
+            ctx.strokeStyle = "#d3d3d3";
+            ctx.stroke();
+            
+          }
+        }
+//PRAVI POCETNA 4 KRUGA
+ctx.beginPath();
+ctx.moveTo(tezina,(dimenzija-tezina)/2);
+ctx.lineTo(tezina,(dimenzija+tezina)/2);
+ctx.strokeStyle = "blue";
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo((dimenzija-tezina)/2,tezina);
+ctx.lineTo((dimenzija+tezina)/2,tezina);
+ctx.strokeStyle = "blue";
+ctx.stroke();
+ctx.beginPath();
+ctx.moveTo(dimenzija-tezina,(dimenzija-tezina)/2);
+ctx.lineTo(dimenzija-tezina,(dimenzija+tezina)/2);
+ctx.moveTo(dimenzija-(dimenzija-tezina)/2,dimenzija-tezina);
+ctx.lineTo(dimenzija-(dimenzija+tezina)/2,dimenzija-tezina);
+ctx.strokeStyle = "red";
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(tezina/2, dimenzija/2, tezina/3, 0, Math.PI * 2, true);
+ctx.strokeStyle = "blue";
+ctx.fillStyle = 'blue';
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(dimenzija-tezina/2, dimenzija/2, tezina/3, dimenzija/2, Math.PI * 2, true);
+ctx.strokeStyle = "red";
+ctx.fillStyle = 'red';
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(dimenzija/2, dimenzija-tezina/2, tezina/3, dimenzija/2, Math.PI * 2, true);
+ctx.strokeStyle = "red";
+ctx.fillStyle = 'red';
+ctx.fill();
+ctx.stroke();
+ctx.beginPath();
+ctx.arc(dimenzija/2, tezina/2, tezina/3, 0, Math.PI * 2, true);
+ctx.strokeStyle = "blue";
+ctx.fillStyle = 'blue';
+ctx.fill();
+ctx.stroke();
+
+    }
+//NA KLIK MJENJA BOJU
+bodovi1=2;
+bodovi2=2;
+elemLeft= myCanvas.offsetLeft + myCanvas.clientLeft;
+elemTop= myCanvas.offsetTop + myCanvas.clientTop;
+  myCanvas.addEventListener('click', function (event){
+  var x=event.pageX-elemLeft;
+  var y= event.pageY-elemTop;
+  var xk = x%tezina;
+  var yk = y%tezina;
+  //PROVJERAVA DALI JE TACKA UNUTAR BAKLAVE
+  if (y>tezina && x>tezina && (x+y-tezina>(dimenzija-tezina)/2 && x<(dimenzija-tezina)/2 && y<(dimenzija-tezina)/2) 
+  || (x<dimenzija-tezina && y<dimenzija-tezina && x+y-tezina<3*(dimenzija-tezina)/2 && x>(dimenzija-tezina)/2 && y>(dimenzija-tezina)/2) 
+    || (x<dimenzija-tezina && y>tezina && x-y<(dimenzija-tezina)/2 && x>(dimenzija-tezina)/2 && y<(dimenzija-tezina)/2) 
+    || (x>tezina && y<dimenzija-tezina && y-x<(dimenzija-tezina)/2 && x<(dimenzija-tezina)/2 && y>(dimenzija-tezina)/2)) {
+  //PRVI KVADRANT
+  if (xk >= yk && xk + yk<= tezina){
+    var slobodno = true;
+    //PROVJERAVA DALI JE SLOBODNA LINIJA
+    for(var i = 0; i < Igrac.length; i++) {
+      if ((Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk)||
+        (Igrac[i].x2 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x1 == x-xk+tezina && Igrac[i].y2== y-yk)) {
+        slobodno = false;
+        break;
+      }
+    }
+    if(slobodno){
+    //CRTA LINIJU
+    ctx.beginPath();
+    ctx.moveTo(x-xk,y-yk);
+    ctx.lineTo(x-xk+tezina,y-yk);
+    if (brojac1==0) {
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    //PROVJERAVA DALI JE IGRAC OSVOJIO KOCKU, AKO JEST CRTA KRUG UNUTAR NJE
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk-tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk-tezina){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk-tezina && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk-tezina && Igrac[k].x2 == x-xk+tezina && Igrac[k].y2== y-yk){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk-tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    brojac1--;
+    } 
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk+tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+tezina 
+        && Igrac[k].y2== y-yk+tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    if(brojac1==0){brojac1--;}
+        }    
+    brojac1++;
+    } else {
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk-tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk-tezina){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk-tezina && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk-tezina && Igrac[k].x2 == x-xk+tezina && Igrac[k].y2== y-yk){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk-tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    brojac1++;
+    } 
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk+tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+tezina 
+        && Igrac[k].y2== y-yk+tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    if(brojac1==1){brojac1++;}
+        }    
+    brojac1--;
+    }
+    Igrac.push({x1:x-xk,y1:y-yk,x2:x-xk+tezina,y2:y-yk});
+  }}
+  //DRUGI KVADRANT
+   else if (xk >= yk && xk + yk>= tezina){
+    var slobodno = true;
+    for(var i = 0; i < Igrac.length; i++) {
+      if ((Igrac[i].x1 == x-xk+tezina && Igrac[i].y1 == y-yk+tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk)||
+        (Igrac[i].x1 == x-xk+tezina && Igrac[i].y2 == y-yk+tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y1== y-yk)) {
+        slobodno = false;
+        break;
+      }
+    }
+    if(slobodno){
+    ctx.beginPath();
+    ctx.moveTo(x-xk+tezina,y-yk);
+    ctx.lineTo(x-xk+tezina,y-yk+tezina);
+    if (brojac1==0) {
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk+tezina && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk && Igrac[k].y2== y-yk+tezina){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    brojac1--;
+    }
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk+tezina && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+2*tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk+tezina && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk+2*tezina 
+        && Igrac[j].y2== y-yk+tezina){brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+2*tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+2*tezina 
+        && Igrac[k].y2== y-yk+tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+3*tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    if(brojac1==0){brojac1--;}
+    }
+    ctx.stroke();
+    brojac1++;
+    } else {
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk+tezina && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk && Igrac[k].y2== y-yk+tezina){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    brojac1++;
+    }
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk+tezina && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+2*tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk+tezina && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk+2*tezina 
+        && Igrac[j].y2== y-yk+tezina){brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+2*tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+2*tezina 
+        && Igrac[k].y2== y-yk+tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+3*tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    if(brojac1==1){brojac1++;}
+    }
+    brojac1--;}
+    Igrac.push({x1:x-xk+tezina,y1:y-yk,x2:x-xk+tezina,y2:y-yk+tezina});
+  //TRECI KVADRANT
+  }} else if (xk <= yk && xk + yk>= tezina){
+    var slobodno = true;
+    for(var i = 0; i < Igrac.length; i++) {
+      if ((Igrac[i].x1 == x-xk+tezina && Igrac[i].y1 == y-yk+tezina && Igrac[i].x2 == x-xk && Igrac[i].y2== y-yk+tezina)||
+        (Igrac[i].x2 == x-xk+tezina && Igrac[i].y1 == y-yk+tezina && Igrac[i].x1 == x-xk && Igrac[i].y2== y-yk+tezina)) 
+      {
+        slobodno = false;
+        break;
+      }
+    }
+    if (slobodno) {
+    ctx.beginPath();
+    ctx.moveTo(x-xk,y-yk+tezina);
+    ctx.lineTo(x-xk+tezina,y-yk+tezina);
+    if (brojac1==0) {
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+tezina && Igrac[k].y2== y-yk+tezina){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    brojac1--;
+    } 
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk+2*tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk+2*tezina){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+2*tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk+tezina && Igrac[k].x2 == x-xk+tezina 
+        && Igrac[k].y2== y-yk+2*tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+3*tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    if(brojac1==0){brojac1--;}
+    } 
+    brojac1++;
+    } else {
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+tezina && Igrac[k].y2== y-yk+tezina){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    brojac1++;
+    } 
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk+2*tezina && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk+2*tezina){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+2*tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk+tezina && Igrac[k].x2 == x-xk+tezina 
+        && Igrac[k].y2== y-yk+2*tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+3*tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    if(brojac1==1){brojac1++;}
+    }    
+    brojac1--;}
+    Igrac.push({x1:x-xk,y1:y-yk+tezina,x2:x-xk+tezina,y2:y-yk+tezina});}
+  } 
+  //CETVRTI KVADRANT
+  else {
+    var slobodno = true;
+    for(var i = 0; i < Igrac.length; i++) {
+      if ((Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk && Igrac[i].y2== y-yk+tezina)||
+        (Igrac[i].x1 == x-xk && Igrac[i].y2 == y-yk && Igrac[i].x2 == x-xk && Igrac[i].y1== y-yk+tezina)) {
+        slobodno = false;
+        break;
+      }
+    }
+    if(slobodno){
+    ctx.beginPath();
+    ctx.moveTo(x-xk,y-yk);
+    ctx.lineTo(x-xk,y-yk+tezina);
+    if (brojac1==0) {
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk-tezina && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk-tezina && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk-tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk-tezina && Igrac[k].y2== y-yk+tezina){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk-tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    brojac1--;
+    }
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk+tezina 
+        && Igrac[j].y2== y-yk+tezina){brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+tezina 
+        && Igrac[k].y2== y-yk+tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.stroke();
+    bodovi1++;
+    if(brojac1==0){brojac1--;}
+    }
+    brojac1++;
+    } else {
+    ctx.strokeStyle = "red";
+    ctx.stroke();
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk-tezina && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk-tezina && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk && Igrac[j].y2== y-yk+tezina){
+    brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk-tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk-tezina && Igrac[k].y2== y-yk+tezina){
+    brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk-tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    brojac1++;
+    }
+    brojac2=0;
+    for(var i = 0; i < Igrac.length; i++) {
+    if (Igrac[i].x1 == x-xk && Igrac[i].y1 == y-yk && Igrac[i].x2 == x-xk+tezina && Igrac[i].y2== y-yk){
+    brojac2++; break; }}
+    for(var j = 0; j < Igrac.length; j++) {
+    if (Igrac[j].x1 == x-xk && Igrac[j].y1 == y-yk+tezina && Igrac[j].x2 == x-xk+tezina 
+        && Igrac[j].y2== y-yk+tezina){brojac2++; break; }}
+    for(var k = 0; k < Igrac.length; k++) {
+    if (Igrac[k].x1 == x-xk+tezina && Igrac[k].y1 == y-yk && Igrac[k].x2 == x-xk+tezina 
+        && Igrac[k].y2== y-yk+tezina){brojac2++; break;}}
+    if (brojac2==3) {ctx.beginPath();
+    ctx.arc(x-xk+tezina/2, y-yk+tezina/2, tezina/3, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.stroke();
+    bodovi2++;
+    if(brojac1==1){brojac1++;}
+    }
+    brojac1--;}
+    Igrac.push({x1:x-xk,y1:y-yk,x2:x-xk,y2:y-yk+tezina});}
+  }}
+  //ODREDUJE POBJEDNIKA
+   if (tezinaigre=="Small"){if(bodovi1+bodovi2==41){if(bodovi1>20){if (confirm("Pobjedio je "+ Ime1 +", zelite li ponove igrati?")) { baklava(549, 61,'myCanvas');} else{window.location.reload();}
+   }else{if(confirm("Pobjedio je "+ Ime2 +", zelite li ponove igrati?")){ baklava(549, 61,'myCanvas');}
+   else{window.location.reload();}}}}
+   if (tezinaigre=="Medium"){if(bodovi1+bodovi2==61){if(bodovi1>30){if (confirm("Pobjedio je "+ Ime1 +", zelite li ponove igrati?")) { baklava(550, 50,'myCanvas');} else{window.location.reload();}
+   }else{if(confirm("Pobjedio je "+ Ime2 +", zelite li ponove igrati?")){ baklava(550, 50,'myCanvas');}
+   else{window.location.reload();}}}}
+   if (tezinaigre=="Large"){if(bodovi1+bodovi2==85){if(bodovi1>42){if (confirm("Pobjedio je "+ Ime1 +", zelite li ponove igrati?")) { baklava(546, 42,'myCanvas');} else{window.location.reload();}
+   }else{if(confirm("Pobjedio je "+ Ime2 +", zelite li ponove igrati?")){baklava(546, 42,'myCanvas');}
+   else{window.location.reload();}}}}
+   if (tezinaigre=="Extra Large"){if(bodovi1+bodovi2==145){if(bodovi1>72){if (confirm("Pobjedio je "+ Ime1 +", zelite li ponove igrati?")) { baklava(544, 32,'myCanvas');} else{window.location.reload();}
+   }else{if(confirm("Pobjedio je "+ Ime2 +", zelite li ponove igrati?")){ baklava(544, 32,'myCanvas');}
+   else{window.location.reload();}}}}
+  });
+
+return 0;
+};
+</script>
+</body>
+</html>
